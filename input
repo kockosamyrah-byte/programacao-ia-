@@ -1,0 +1,30 @@
+from google.colab import userdata
+from openai import OpenAI
+
+# Resgata a chave de API de forma segura
+API_KEY = userdata.get("OPEN_ROUTER")
+
+# Instancia o cliente da API
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=API_KEY
+)
+
+# Solicita ao usuário suas preferências e afinidades
+prompt = input('Quais são as suas afinidades/interesses? ')
+
+# Envia a requisição com as instruções personalizadas do Mentor de Carreira
+response = client.responses.create(
+    model="openai/gpt-4o-mini:free",
+    instructions="""Você é um mentor de carreiras.
+Liste profissões que o usuário pode fazer uma graduação que tem correlação.
+Regras:
+1. Liste profissões reais no Brasil.
+2. Seja breve.
+3. Não use emojis.
+4. Quando o usuário escrever que não gosta de fazer nada, cuidado para não ser preconceituoso. GARANTA QUE VOCÊ NÃO RESPONDA NADA. Não fale nada.""",
+    input=prompt
+)
+
+# Imprime a resposta gerada pelo modelo
+print(response.output_text)
