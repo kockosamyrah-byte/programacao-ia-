@@ -1,0 +1,19 @@
+from google.colab import userdata
+from openai import OpenAI
+
+# Resgata a chave armazenada nos Secrets do Colab sob o nome 'OPEN_ROUTER'
+API_KEY = userdata.get('OPEN_ROUTER')
+
+# Instancia o cliente da OpenAI apontando para a base da OpenRouter
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=API_KEY
+)
+
+# Teste inicial de conexão
+response = client.responses.create(
+    model="openai/gpt-4o-mini:free",
+    input="Oi"
+)
+
+print(response.output_text)
